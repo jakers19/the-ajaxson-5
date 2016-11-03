@@ -18,43 +18,58 @@ function fetchAndDisplayGif(event) {
     // Because we will be making our own AJAX request, we dont need to send a normal request and we definitely don't want the page to refresh.
     event.preventDefault();
     
-    // get the user's input text from the DOM
-    var searchQuery = ""; // TODO should be e.g. "dance"
-
-    // configure a few parameters to attach to our request
-    var params = { 
-        api_key: "dc6zaTOxFJmzC", 
-        tag : "" // TODO should be e.g. "jackson 5 dance"
+   check = $("#valid").val();
+     $("#gif-area").show();
+     if (check == 5) {
+         $("#valerr").hide();
+         $("#valid").css("border-color", "")
+         $(".input-group-addon").css("color", "").css("border-color", "").css("background-color", "");
+         $("#loading").show();
+         var searchQuery = document.getElementById("tag").value;
+         var params = {
+         api_key: "dc6zaTOxFJmzC",
+         tag : "jackson 5 " + searchQuery
     };
     
-    // make an ajax request for a random GIF
-    $.ajax({
-        url: "", // TODO where should this request be sent?
-        data: params, // attach those extra parameters onto the request
-        success: function(response) {
+        $.ajax({
+             url: "https://api.giphy.com/v1/gifs/random",
+             data: params, // attach those extra parameters onto the request
+             success: function(response) {
+                 $("#loading").hide();
             // if the response comes back successfully, the code in here will execute.
             
             // jQuery passes us the `response` variable, a regular javascript object created from the JSON the server gave us
-            console.log("we received a response!");
-            console.log(response);
-            
-            // TODO
-            // 1. set the source attribute of our image to the image_url of the GIF
-            // 2. hide the feedback message and display the image
+           console.log("we received a response!");
+          console.log(response);
+             //document.getElementById("gif").hidden = false;
+             //$("#feedback").text("Loading...");
+             //document.getElementById("feedback").hidden = false;
+ 
+                 document.getElementById("gif").src = response.data.image_url;
+             //$("feedback").hide;
+                 setGifLoadedStatus(true);
+                 $("#gif").show();
         },
         error: function() {
             // if something went wrong, the code in here will execute instead of the success function
             
             // give the user an error message
-            $("#feedback").text("Sorry, could not load GIF. Try again!");
-            setGifLoadedStatus(false);
-        }
-    });
+             $("#loading").hide();
+ 
+                 $("#feedback").text("Sorry, could not load GIF. Try again!");
+                 setGifLoadedStatus(false);
+             }
+         });
+     }
+     else {
+         $("#gif-area").hide();
+         $("#valerr").show();
+         $(".input-group-addon").css("color", "red").css("border-color", "red").css("background-color", "#ffb3b3");
+         $("#valid").css("border-color", "red");
+         $("#gif").hide();
+     }
     
-    // TODO
-    // give the user a "Loading..." message while they wait
-    
-}
+
 
 
 /**
@@ -65,4 +80,7 @@ function fetchAndDisplayGif(event) {
 function setGifLoadedStatus(isCurrentlyLoaded) {
     $("#gif").attr("hidden", !isCurrentlyLoaded);
     $("#feedback").attr("hidden", isCurrentlyLoaded);
+
+ }
 }
+    

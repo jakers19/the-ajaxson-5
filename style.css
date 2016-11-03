@@ -1,0 +1,13 @@
++.error {
+ +    color: red;
+ +}
+ +.panel-body {
+ +    background-color: lightgrey;
+ +    border: solid;
+ +    border-color: darkgrey;
+ +    max-width: 525px;
+ +}
+ +.panel {
+ +    border: none;
+ +    margin: 0;
+ +}
